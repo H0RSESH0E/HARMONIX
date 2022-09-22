@@ -5,12 +5,10 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from '@kolkov
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { Message } from 'src/app/_models/message';
 import { MessageService } from 'src/app/_services/message.service';
-import { MembersService } from 'src/app/_services/members.service';
 import { PresenceService } from 'src/app/_services/presence.service';
 import { AccountService } from 'src/app/_services/account.service';
 import { User } from 'src/app/_models/user';
 import { take } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-detail',
@@ -28,7 +26,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   constructor(public presence: PresenceService, private route: ActivatedRoute, 
     private messageService: MessageService, private accountService: AccountService,
-    private router: Router, private memberService: MembersService, private toastr: ToastrService) { 
+    private router: Router) { 
       this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
@@ -76,12 +74,6 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   selectTab(tabId: number) {
     this.memberTabs.tabs[tabId].active = true;
-  }
-
-  addLike(member: Member) {
-    this.memberService.addLike(member.username).subscribe(() => {
-      this.toastr.success('You have liked ' + member.knownAs);
-    })
   }
 
   onTabActivated(data: TabDirective) {
