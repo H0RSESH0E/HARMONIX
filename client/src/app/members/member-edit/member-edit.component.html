@@ -1,6 +1,6 @@
 <div class="row" *ngIf="member">
   <div class="col-4">
-    <h1>Your profile</h1>
+    <h1 class="text-light">Your profile</h1>
   </div>
   <div class="col-8">
     <div class="alert alert-info" *ngIf="editForm.dirty">
@@ -29,16 +29,16 @@
         </div>
       </div>
       <div class="card-footer">
-        <button [disabled]="!editForm.dirty" form="editForm" type="submit" class="btn btn-success btn-block">Save
+        <button [disabled]="!editForm.dirty" form="editForm" type="submit" class="btn btn-info btn-block">Save
           Changes</button>
       </div>
     </div>
   </div>
 
-  <div class="col-8">
+  <div class="col-8 glass-container p-2">
     <tabset class="member-tabset">
       <tab heading='About {{member.knownAs}}'>
-        <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
+        <form #editForm="ngForm" id="editForm" class="container" (ngSubmit)="updateMember()">
           <h4>Description</h4>
           <textarea class="form-control" [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
           <h4 class="mt-2">Looking for</h4>
@@ -56,7 +56,9 @@
 
       </tab>
       <tab heading='Edit Photos'>
-        <app-photo-editor [member]="member"></app-photo-editor>
+        <div class="p-3">
+          <app-photo-editor [member]="member"></app-photo-editor>
+        </div>
       </tab>
     </tabset>
   </div>

@@ -1,22 +1,18 @@
-<div class="text-center mt-3">
-  <h2>Your matches - {{pagination?.totalItems}} found</h2>
-</div>
-
-<div class="container mt-3">
+<div class="container mt-3 bg-light my-3 pt-3 rounded">
   <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
     <div class="form-group">
-      <label>Age from: </label>
-      <input type="number" class="form-control ml-1" style="width: 70px;" 
+      <label class="text-primary">Age from: </label>
+      <input type="number" class="form-control ml-1" style="width: 5.5rem;" 
         name="minAge" [(ngModel)]="userParams.minAge">
     </div>
     <div class="form-group px-2">
-      <label>Age from: </label>
-      <input type="number" class="form-control ml-1" style="width: 70px;" 
+      <label class="text-primary">Age from: </label>
+      <input type="number" class="form-control ml-1" style="width: 5.5rem;" 
         name="maxAge" [(ngModel)]="userParams.maxAge">
     </div>
     <div class="form-group px-2">
-      <label>Show: </label>
-      <select name="gender" style="width: 130px" [(ngModel)]="userParams.gender" class="form-control ml-1">
+      <label class="text-primary">Show: </label>
+      <select name="gender" style="width: 5.5rem;" [(ngModel)]="userParams.gender" class="form-control ml-1">
         <option *ngFor="let gender of genderList" [value]="gender.value">
           {{gender.display}}
         </option>
@@ -42,15 +38,20 @@
           name="orderBy" 
           [(ngModel)]="userParams.orderBy"
           (click)="loadMembers()"
-          btnRadio="created">Newest Members</button>
+          btnRadio="created"
+        >
+          Newest Members
+        </button>
       </div>
     </div>
-
   </form>
+  <div class="row text-center">
+          <p>{{pagination?.totalItems}} results found</p>
+        </div>
 </div>
 
-<div class="row">
-  <div *ngFor="let member of members" class="col-2">
+<div class="d-flex flex-wrap px-3 justify-content-center">
+  <div *ngFor="let member of members" class="col-2" style="min-width: 187px;">
     <app-member-card [member]="member"></app-member-card>
   </div>
 </div>

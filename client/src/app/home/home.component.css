@@ -1,0 +1,8 @@
+.container.home p,
+.container.home h1,
+.container.home h2,
+.container.home h3,
+.container.home span {
+    color      : white;
+    text-shadow: black -2px 0px 5px;
+}

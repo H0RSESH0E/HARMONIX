@@ -11,6 +11,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     CommonModule, 
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
-      positionClass: 'toast-botton-right'
+      positionClass: 'toast-bottom-right'
     }),
     TabsModule.forRoot(),
     NgxGalleryModule,
@@ -30,6 +31,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ButtonsModule.forRoot(),
     TimeagoModule.forRoot(),
     ModalModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   exports: [
     BsDropdownModule,
@@ -42,7 +44,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     PaginationModule,
     ButtonsModule,
     TimeagoModule,
-    ModalModule
+    ModalModule,
+    CollapseModule
   ]
 })
 export class SharedModule { }

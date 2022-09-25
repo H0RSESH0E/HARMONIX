@@ -1,0 +1,112 @@
+[
+    {
+      "Name": "Spring Reed",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2008,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/springreed",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Summer Salt",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2004,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/summersalt",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Winterizers",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2012,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/winterizers",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Mary Fix Sense",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2008,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/maryfixsense",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Sona Music Entertainment",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 1929,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/sonamusic",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Abbi Rose Studios",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 1931,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/abbirose",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Lingo Talent Management",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2002,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/lingotalent",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Valencia Music Academy",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2000,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/valenciaacademy",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Boneo Academy of Early Music",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2008,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/boneoearlymusic",
+          "IsMain": true
+        }
+      ]
+    },
+    {
+      "Name": "Boneo Academy of Contemporary Music and Sound Design",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 20012,
+      "Photos": [
+        {
+          "Url": "https://robohash.org/boneocontmusic",
+          "IsMain": true
+        }
+      ]
+    }
+]
