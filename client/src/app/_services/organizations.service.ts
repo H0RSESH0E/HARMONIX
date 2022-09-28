@@ -1,13 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { Organization } from '../_models/organization';
-import { User } from '../_models/user';
-import { UserParams } from '../_models/userParams';
-import { AccountService } from './account.service';
+import { OrgParams } from '../_models/OrgParams';
 import { getPaginationHeaders, getPaginatedResult } from './paginationHelper';
 
 @Injectable({
@@ -18,42 +16,38 @@ export class OrganizationsService {
   baseUrl = environment.apiUrl;
     organizations: Organization[] = [];
     organizationCache = new Map();
-    user: User;
-    userParams: UserParams;
+    orgParams: OrgParams;
 
-    getUserParams() {
-        return this.userParams
+    getOrgParams() {
+        return this.orgParams
     }
 
-    setUserParams(params: UserParams) {
-        this.userParams = params;
+    setOrgParams(params: OrgParams) {
+        this.orgParams = params;
     }
 
-    resetUserParams() {
-        this.userParams = new UserParams(this.user);
-        return this.userParams;
+    resetOrgParams() {
+        this.orgParams = new OrgParams();
+        return this.orgParams;
     }
 
-    constructor(private http: HttpClient, private accountService: AccountService) {
-        this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
-            this.user = user;
-            this.userParams = new UserParams(user);
-        })
+    constructor(private http: HttpClient) {
+        this.orgParams = new OrgParams();
     }
 
-    getOrganizations(userParams: UserParams) {
-        var response = this.organizationCache.get(Object.values(userParams).join('-'));
+    getOrganizations(OrgParams: OrgParams) {
+        var response = this.organizationCache.get(Object.values(OrgParams).join('-'));
         if (response) {
             return of(response);
         }
 
-        let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+        let params = getPaginationHeaders(OrgParams.pageNumber, OrgParams.pageSize);
 
-        params = params.append('orderBy', userParams.orderBy);
+        params = params.append('orderBy', OrgParams.orderBy);
 
         return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
             .pipe(map(response => {
-                this.organizationCache.set(Object.values(userParams).join('-'), response);
+                this.organizationCache.set(Object.values(OrgParams).join('-'), response);
                 return response;
             }));
     }

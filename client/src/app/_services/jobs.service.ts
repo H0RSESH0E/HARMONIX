@@ -71,7 +71,13 @@ export class JobsService {
   getJobsByPosterId(id: number) {
     const job = this.jobs.filter(x => x.jobPosterId === id);
     if (job !== undefined) return of(job);
-    return this.http.get<Job>(this.baseUrl + 'poster/' + id);
+    return this.http.get<Job>(this.baseUrl + 'jobs/poster/' + id);
+  }
+
+  getJobsByTitle(title: string) {
+    const job = this.jobs.filter(x => x.title.includes(title));
+    if (job !== undefined) return of(job);
+    return this.http.get<Job>(this.baseUrl + 'jobs/title/' + title);
   }
 
   updateJob(job: Job) {
@@ -84,12 +90,12 @@ export class JobsService {
   }
 
   saveJob(id: number) {
-    return this.http.post(this.baseUrl + 'likes/' + id, {});
+    return this.http.post(this.baseUrl + 'saved/' + id, {});
   }
 
   getSavedJobs(predicate: string, pageNumber, pageSize) {
     let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
-    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'likes', params, this.http);
+    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'saved', params, this.http);
   }
 }

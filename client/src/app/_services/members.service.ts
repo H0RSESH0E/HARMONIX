@@ -4,7 +4,6 @@ import { of, pipe } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
-import { PaginatedResult } from '../_models/pagination';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -50,7 +49,7 @@ export class MembersService {
 
         params = params.append('minAge', userParams.minAge.toString());
         params = params.append('maxAge', userParams.maxAge.toString());
-        params = params.append('gender', userParams.gender);
+        params = params.append('gender', userParams.jobType);
         params = params.append('orderBy', userParams.orderBy);
 
         return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
@@ -97,6 +96,4 @@ export class MembersService {
         params = params.append('predicate', predicate);
         return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
     }
-
-
 }

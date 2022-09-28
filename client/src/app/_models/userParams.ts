@@ -1,15 +1,14 @@
 import { User } from "./user";
 
 export class UserParams {
-  gender: string;
+  jobType: string;
   minAge = 18;
   maxAge = 99;
   pageNumber = 1;
   pageSize = 5;
-  orderBy = 'lastActive';
+  orderBy = 'lastUpdated';
 
   constructor(user: User) {
-    this.gender = user.gender === 'female' ? 'male' : 'female';
-
+    this.jobType = 'full-time';
   }
 }
