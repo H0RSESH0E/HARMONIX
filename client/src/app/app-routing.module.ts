@@ -5,6 +5,9 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { HomeComponent } from './home/home.component';
+import { JobBoardComponent } from './Jobs/job-board/job-board.component';
+import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
+import { JobSavedComponent } from './Jobs/job-saved/job-saved.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -25,6 +28,9 @@ const routes: Routes = [
       {path: 'members', component: MemberListComponent},
       {path: 'members/:username', component: MemberDetailComponent, resolve: {member: MemberDetailedResolver}},
       {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
+      {path: 'jobs', component: JobBoardComponent},
+      {path: 'jobs/:id', component: JobDetailComponent},
+      {path: 'savedJobs', component: JobSavedComponent},
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},

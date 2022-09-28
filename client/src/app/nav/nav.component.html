@@ -1,42 +1,85 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary px-2">
   <div class="container">
     <a class="navbar-brand" routerLink="/">Harmonix</a>
-    <button type="button" class="navbar-toggler collapsed" (click)="isCollapsed = !isCollapsed"
-        [attr.aria-expanded]="!isCollapsed" aria-controls="navbarCollapse" aria-label="Toggle navigation">
+    <button
+      type="button"
+      class="navbar-toggler collapsed"
+      (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="navbarCollapse"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
-</button>
-    <div id="navbarCollapse" class="navbar-collapse collapse" [collapse]="isCollapsed" [isAnimated]="true">
+    </button>
+    <div
+      id="navbarCollapse"
+      class="navbar-collapse collapse"
+      [collapse]="isCollapsed"
+      [isAnimated]="true"
+    >
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
-      <ng-container *ngIf="accountService.currentUser$ | async">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/members" routerLinkActive="active">Discover</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/lists" routerLinkActive="active">My Network</a>
-        </li>
-    </ng-container>
+        <ng-container *ngIf="accountService.currentUser$ | async">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/members" routerLinkActive="active"
+              >Discover</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/lists" routerLinkActive="active"
+              >My Network</a
+            >
+          </li>
+          
+        </ng-container>
 
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/errors" routerLinkActive="active">Errors</a>
-    </li>
-
-    </ul>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/errors" routerLinkActive="active"
+            >Errors</a
+          >
+        </li>
+      </ul>
     </div>
 
-    <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-      <button id="button-animated" class="dropdown-toggle text-light btn btn-primary" dropdownToggle>
-        <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.username}}">
-        <span class="ml-2">Welcome, {{user.knownAs | titlecase}}!</span>
+    <div
+      class="dropdown"
+      *ngIf="accountService.currentUser$ | async as user"
+      dropdown
+    >
+      <button
+        id="button-animated"
+        class="dropdown-toggle text-light btn btn-primary"
+        dropdownToggle
+      >
+        <img
+          src="{{ user.photoUrl || './assets/user.png' }}"
+          alt="{{ user.username }}"
+        />
+        <span class="ml-2">Welcome, {{ user.knownAs | titlecase }}!</span>
       </button>
-      <ul id="dropdown-animated" class="dropdown-menu mt-3" role="menu" *dropdownMenu>
-         <li role="menuitem">
-          <a class="dropdown-item" routerLink="/messages" routerLinkActive="active">Messages</a>
+      <ul
+        id="dropdown-animated"
+        class="dropdown-menu mt-3"
+        role="menu"
+        *dropdownMenu
+      >
+        <li role="menuitem">
+          <a
+            class="dropdown-item"
+            routerLink="/messages"
+            routerLinkActive="active"
+            >Messages</a
+          >
         </li>
-        <li *appHasRole='["Admin", "Moderator"]' role="menuitem">
-          <a class="dropdown-item" routerLink="/admin" routerLinkActive="active">Admin</a>
+        <li *appHasRole="['Admin', 'Moderator']" role="menuitem">
+          <a class="dropdown-item" routerLink="/admin" routerLinkActive="active"
+            >Admin</a
+          >
         </li>
         <li role="menuitem">
           <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+        </li>
+        <li role="menuitem" name="predicate">
+          <a class="dropdown-item" routerLink="/savedJobs/">Saved Jobs</a>
         </li>
         <div class="dropdown-divider"></div>
         <li role="menuitem">
@@ -45,21 +88,31 @@
       </ul>
     </div>
 
-    <form *ngIf="(accountService.currentUser$ | async) === null" #loginform="ngForm" class="d-flex align-items-center" role="search" (ngSubmit)="login()" 
-      autocomplete="off">
-      <input 
+    <form
+      *ngIf="(accountService.currentUser$ | async) === null"
+      #loginform="ngForm"
+      class="d-flex align-items-center"
+      role="search"
+      (ngSubmit)="login()"
+      autocomplete="off"
+    >
+      <input
         name="usename"
         [(ngModel)]="model.username"
-        class="form-control me-2 rounded" 
-        type="text" 
-        placeholder="Username">
-      <input 
+        class="form-control me-2 rounded"
+        type="text"
+        placeholder="Username"
+      />
+      <input
         name="password"
         [(ngModel)]="model.password"
-        class="form-control me-2 rounded" 
-        type="password" 
-        placeholder="Password">
-      <button class="btn btn-outline-secondary m-0 py-2 px-3" type="submit">Login</button>
+        class="form-control me-2 rounded"
+        type="password"
+        placeholder="Password"
+      />
+      <button class="btn btn-outline-secondary m-0 py-2 px-3" type="submit">
+        Login
+      </button>
     </form>
   </div>
 </nav>

@@ -22,5 +22,11 @@ namespace API.Entities
     public ICollection<Message> MessagesSent { get; set; }
     public ICollection<Message> MessagesReceived { get; set; }
     public ICollection<AppUserRole> UserRoles { get; set; }
+
+   // public ICollection<JobSave> SavedJobByUsers { get; set; }//"Who liked currently logged in user"
+
+    public ICollection<JobSave> SavedJobs{get; set;}//"this is list of users currently logged in user has liked"
+
+    public ICollection<Job> CreatedJobs{get; set;}
   }
 }

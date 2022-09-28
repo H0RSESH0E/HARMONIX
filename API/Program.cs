@@ -20,12 +20,15 @@ namespace API
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
-            try 
+            try
             {
                 var context = services.GetRequiredService<DataContext>();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+                await context.SaveChangesAsync();
+
                 await context.Database.MigrateAsync();
+                await Seed.SeedJobs(context);
                 await Seed.SeedUsers(userManager, roleManager);
 
             }

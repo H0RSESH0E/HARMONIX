@@ -1,0 +1,29 @@
+<div class="card mb-4">
+  <div class="card-img-wrapper">
+    <img src="{{ './assets/user.png' }}" class="card-img-top" />
+    
+    <div class="card-body p-1">
+      <h6 class="card-title text-center mb-1">
+        <i class="fa fa-user mr-2"></i>
+        {{ job.title }}
+      </h6>
+      
+      <p class="card-text text-muted text-center">
+        {{ job.city + "," + job.provinceOrState + "," + job.country }}
+      </p>
+      <p class="card-text text-muted text-center">
+        {{ job.jobType }}
+      </p>
+    </div>
+    <ul class="list-inline animate text-center">
+      <li class="list-inline-item">
+        <button class="btn btn-primary" routerLink="/jobs/{{ job.id }}">
+          More Info
+        </button>
+      </li>
+      <li class="list-inline-item">
+        <button class="btn btn-primary" (click)="addSaveJob(job)">Save</button>
+      </li>
+    </ul>
+  </div>
+</div>

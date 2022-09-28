@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220928014133_AddedJobs")]
+    partial class AddedJobs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -246,21 +248,6 @@ namespace API.Data.Migrations
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("API.Entities.JobSave", b =>
-                {
-                    b.Property<int>("SourceUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SavedJobId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SourceUserId", "SavedJobId");
-
-                    b.HasIndex("SavedJobId");
-
-                    b.ToTable("SavedJobs");
-                });
-
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -461,25 +448,6 @@ namespace API.Data.Migrations
                         .HasForeignKey("AppUserId");
                 });
 
-            modelBuilder.Entity("API.Entities.JobSave", b =>
-                {
-                    b.HasOne("API.Entities.Job", "SavedJob")
-                        .WithMany()
-                        .HasForeignKey("SavedJobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Entities.AppUser", "SourceUser")
-                        .WithMany("SavedJobs")
-                        .HasForeignKey("SourceUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SavedJob");
-
-                    b.Navigation("SourceUser");
-                });
-
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "Recipient")
@@ -583,8 +551,6 @@ namespace API.Data.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Photos");
-
-                    b.Navigation("SavedJobs");
 
                     b.Navigation("UserRoles");
                 });

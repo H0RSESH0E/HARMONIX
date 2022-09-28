@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Data
 {
     public class DataContext : IdentityDbContext<AppUser, AppRole, int,
-        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
@@ -16,11 +16,26 @@ namespace API.Data
         public DbSet<UserLike> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+
+        public DbSet<JobSave> SavedJobs { get; set; }
+
         public DbSet<Connection> Connections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<JobSave>()
+                .HasKey(k => new { k.SourceUserId, k.SavedJobId }); //PK = Source User Id+ Saved Job Id
+
+            builder.Entity<JobSave>()
+                .HasOne(s => s.SourceUser)
+                .WithMany(l => l.SavedJobs)
+                .HasForeignKey(s => s.SourceUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
 
             builder.Entity<Group>()
                 .HasMany(x => x.Connections)

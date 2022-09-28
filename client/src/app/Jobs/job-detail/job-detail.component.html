@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">{{ job.title }}</h3>
+    <p class="card-text">
+      Location: {{ job.city + "," + job.provinceOrState + "," + job.country }}
+    </p>
+    <p class="card-text">JobType: {{ job.jobType }}</p>
+    <p class="card-text">Date Posted: {{ job.dateCreated }}</p>
+    <p class="card-text">Deadline: {{ job.deadline }}</p>
+    <p class="card-text">Last Posted: {{ job.lastUpdated }}</p>
+    <div class="btn-group">
+      <button class="btn btn-primary">Apply</button>
+      <button class="btn btn-primary ml-2">Save</button>
+    </div>
+  </div>
+</div>

@@ -31,6 +31,11 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { JobBoardComponent } from './Jobs/job-board/job-board.component';
+import { JobSavedComponent } from './Jobs/job-saved/job-saved.component';
+import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
+import { JobCardComponent } from './Jobs/job-card/job-card.component';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +60,14 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
-    RolesModalComponent
+    RolesModalComponent,
+    JobBoardComponent,
+    JobSavedComponent,
+    JobDetailComponent,
+    JobCardComponent,
+    
+    
+    
   ],
   imports: [
     BrowserModule,
