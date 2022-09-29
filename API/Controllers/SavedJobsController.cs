@@ -85,7 +85,7 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SavedjobDto>>> GetUserSavedjobs([FromQuery] SavedJobsParams savedJobsParams)
+        public async Task<ActionResult<IEnumerable<SavedjobDto>>> GetUserSavedjobs([FromQuery]SavedJobsParams savedJobsParams)
         {
             savedJobsParams.UserId = User.GetUserId();
             var jobs = await _savedJobsRepository.GetUserSavedjobs(savedJobsParams);

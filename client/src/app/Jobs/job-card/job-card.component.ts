@@ -11,6 +11,7 @@ import { JobsService } from 'src/app/_services/jobs.service';
 export class JobCardComponent implements OnInit {
   @Input() job: Job;
   
+  
   constructor(private jobService: JobsService, private toastr: ToastrService) {
 
   }
@@ -18,14 +19,10 @@ export class JobCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addSaveJob(job: Job) {
-    console.log("job-card");
-    
+  addSaveJob(job: Job) {    
     this.jobService.addSaveJob(job.id).subscribe(() => {
       this.toastr.success('You have saved this job.');
     })
-
-    console.log(job);
   }
 
 }

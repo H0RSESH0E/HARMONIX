@@ -19,12 +19,17 @@ export class JobsService {
 
     constructor(private http: HttpClient) { }
 
-    getJobs() {
-        return this.http.get<Job[]>(this.baseUrl + 'jobs');
+    // getJobs() {
+    //     return this.http.get<Job[]>(this.baseUrl + 'jobs');
+    // }
+
+    getJobs(predicate: string, pageNumber, pageSize) {
+        let params = getPaginationHeaders(pageNumber, pageSize);
+        params = params.append('predicate', predicate);
+        return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'jobs' , params, this.http);
     }
 
     getJob(id: number) {
-      //  console.log("this is from service", id)
         return this.http.get<Job>(this.baseUrl + 'jobs/' + id);
     }
 
@@ -34,7 +39,6 @@ export class JobsService {
     };
 
     removeSaveJob(id: number) {
-       // console.log("incoming incoming",id);
         return this.http.delete(this.baseUrl + 'savedJobs/delete-savedJob/' + id, {});
     };
 
@@ -42,7 +46,6 @@ export class JobsService {
     getSavedJobs(predicate: string, pageNumber, pageSize) {
         let params = getPaginationHeaders(pageNumber, pageSize);
         params = params.append('predicate', predicate);
-       // console.log(params);
         return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'savedJobs' , params, this.http);
     }
 }

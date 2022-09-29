@@ -70,8 +70,7 @@ namespace API.Data
         public async Task<AppUser> GetUserWithSavedJobs(int userId)
         {
             return await _context.Users.Include(x => x.SavedJobs).FirstOrDefaultAsync(x => x.Id == userId); //check function for this
-                                                                                                            // Users = SavedJob
-                                                                                                            //change AppUser to JobSave
+                                                                                                            // Users = SavedJob                                                                                                //change AppUser to JobSave
         }
     }
 }

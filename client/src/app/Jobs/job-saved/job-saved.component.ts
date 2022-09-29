@@ -27,7 +27,6 @@ export class JobSavedComponent implements OnInit {
 
   loadSavedJobs() {
     this.jobService.getSavedJobs(this.predicate, this.pageNumber, this.pageSize).subscribe(response => {
-      // console.log("sdfs", response);
       this.jobs = response.result;
       this.pagination = response.pagination;
     })
@@ -36,7 +35,6 @@ export class JobSavedComponent implements OnInit {
 
 
   removeSaveJob(job: Job) {
-    console.log("job", job);
     this.jobService.removeSaveJob(job.id).subscribe(() => {
       this.toastr.success('You have remove this from saved jobs.');
       this.loadSavedJobs();
@@ -45,7 +43,7 @@ export class JobSavedComponent implements OnInit {
   }
 
   pageChanged(event: any) {
-    this.pageNumber = event.Page;
+    this.pageNumber = event.page;
     this.loadSavedJobs();
   }
 

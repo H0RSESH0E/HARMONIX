@@ -4,6 +4,7 @@ import { JobsService } from 'src/app/_services/jobs.service';
 
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { Pagination } from 'src/app/_models/pagination';
 
 @Component({
   selector: 'app-job-board',
@@ -11,8 +12,12 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./job-board.component.css']
 })
 export class JobBoardComponent implements OnInit {
-  
-  jobs: Job[];
+
+  jobs: Partial<Job[]>;
+  predicate = 'jobs';
+  pageNumber = 1;
+  pageSize = 2;
+  pagination: Pagination;
 
 
 
@@ -23,9 +28,15 @@ export class JobBoardComponent implements OnInit {
   }
 
   loadJobs() {
-    this.jobService.getJobs().subscribe(jobs => {
-      this.jobs = jobs
+    this.jobService.getJobs(this.predicate, this.pageNumber, this.pageSize).subscribe(response => {
+      this.jobs = response.result;
+      this.pagination = response.pagination;
     })
+  }
+
+  pageChanged(event :any) {
+    this.pageNumber =event.page;
+    this.loadJobs();
   }
 
 }

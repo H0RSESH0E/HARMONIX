@@ -3,3 +3,20 @@
     <app-job-card [job]="job"></app-job-card>
   </div>
 </div>
+<h1> Hello</h1>
+<div class="d-flex justify-content-center" *ngIf="pagination">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemsPerPage"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>
+
+
