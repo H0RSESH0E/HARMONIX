@@ -31,9 +31,10 @@ namespace API.Helpers
              .ForMember(dest => dest.OrgId, opt => opt.MapFrom(src =>
              src.Organization.Id))
              .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
-             src.Organization.Name))
+             src.Organization == null ? "Private Event" : src.Organization.Name))
              .ForMember(dest => dest.LogoUrl, opt => opt.MapFrom(src =>
-             src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url))
+             src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url 
+             : src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url))
              .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
              src.JobPoster.Id))
              .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom(src =>

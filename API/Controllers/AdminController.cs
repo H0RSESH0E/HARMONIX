@@ -55,6 +55,16 @@ namespace API.Controllers
             return Ok(await _userManager.GetRolesAsync(user));
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpDelete("{username}")]
+        public async Task<ActionResult> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            await _userManager.DeleteAsync(user);
+
+            return NoContent();
+        }
+
         [Authorize(Policy = "ModeratePhotoRole")]
         [HttpGet("photos-to-moderate")]
         public ActionResult GetPhotosForModeration()
