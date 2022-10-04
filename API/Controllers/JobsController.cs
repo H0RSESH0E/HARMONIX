@@ -28,6 +28,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobDto>>> GetJobs([FromQuery] JobParams jobParams)
         {
+            jobParams.PosterID = User.GetUserId();
+            
             var jobs = await _jobRepository.GetJobsAsync(jobParams);
 
             Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,

@@ -60,6 +60,8 @@ namespace API.Data
                 query = query.Where(u => u.Title.ToLower().Trim().Contains(jobParams.Title.ToLower().Trim()));
             if (jobParams.JobType != null)
                 query = query.Where(u => u.JobType.ToLower().Trim().Contains(jobParams.JobType.ToLower().Trim()));
+            if (jobParams.SelfPost)
+                query = query.Where(u => u.JobPoster.Id == jobParams.PosterID);
 
             query = jobParams.OrderBy switch
             {
@@ -104,8 +106,11 @@ namespace API.Data
 
         public async Task<PagedList<JobDto>> GetJobsByPosterIdAsync(JobParams jobParams, int id)
         {
-            var jobs = _context.Jobs.Where(j => j.JobPoster.Id == id).AsQueryable();
-            var query = jobs;
+            var query = _context.Jobs.Where(j => j.JobPoster.Id == id).AsQueryable();
+            // if (jobParams.Title != null)
+            //     query = query.Where(u => u.Title.ToLower().Trim().Contains(jobParams.Title.ToLower().Trim()));
+            // if (jobParams.JobType != null)
+            //     query = query.Where(u => u.JobType.ToLower().Trim().Contains(jobParams.JobType.ToLower().Trim()));
 
             query = jobParams.OrderBy switch
             {

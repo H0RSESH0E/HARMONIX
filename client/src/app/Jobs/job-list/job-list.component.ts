@@ -23,7 +23,7 @@ export class JobListComponent implements OnInit {
   jobParams: JobsParams;
   title: string;
   jobTypeList = JOB_TYPE;
-
+  
   constructor(private memberService: MembersService, private jobsService: JobsService, private accountService: AccountService) {
     this.jobParams = this.jobsService.getJobParams();
   }
