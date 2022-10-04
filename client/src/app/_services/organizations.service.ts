@@ -1,25 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { Organization } from '../_models/organization';
-import { OrgParams } from '../_models/OrgParams';
+import { User } from '../_models/user';
+import { OrgParams } from '../_models/orgParams';
+
 import { getPaginationHeaders, getPaginatedResult } from './paginationHelper';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganizationsService {
 
-  baseUrl = environment.apiUrl;
+    baseUrl = environment.apiUrl;
     organizations: Organization[] = [];
     organizationCache = new Map();
     orgParams: OrgParams;
 
     getOrgParams() {
-        return this.orgParams
+        return this.orgParams;
     }
 
     setOrgParams(params: OrgParams) {
@@ -32,36 +35,49 @@ export class OrganizationsService {
     }
 
     constructor(private http: HttpClient) {
-        this.orgParams = new OrgParams();
+            this.orgParams = new OrgParams();
     }
 
-    getOrganizations(OrgParams: OrgParams) {
+    getOrganizations(orgParams: OrgParams) {
         var response = this.organizationCache.get(Object.values(OrgParams).join('-'));
         if (response) {
             return of(response);
         }
 
-        let params = getPaginationHeaders(OrgParams.pageNumber, OrgParams.pageSize);
+        let params = getPaginationHeaders(orgParams.pageNumber, orgParams.pageSize);
 
-        params = params.append('orderBy', OrgParams.orderBy);
+        params = params.append('orderBy', orgParams.orderBy);
 
-        return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
+        return getPaginatedResult<Member[]>(this.baseUrl + 'organizations', params, this.http)
             .pipe(map(response => {
-                this.organizationCache.set(Object.values(OrgParams).join('-'), response);
+                this.organizationCache.set(Object.values(orgParams).join('-'), response);
                 return response;
             }));
     }
 
-    getOrganization(orgName: string) {
+    //Change to ID
+    getOrganization(orgId: number) {
         const member = [...this.organizationCache.values()]
             .reduce((arr, elem) => arr.concat(elem.result), [])
-            .find((organization: Organization) => organization.name === orgName);
+            .find((organization: Organization) => organization.id === orgId);
 
         if (member) {
             return of(member);
         }
-        return this.http.get<Member>(this.baseUrl + 'organizations/' + orgName);
+        return this.http.get<Member>(this.baseUrl + 'organizations/' + orgId);
     }
+
+    ////Check with nathan
+    getOrgByPosterId(id: number, orgParams: OrgParams) {
+        let params = getPaginationHeaders(orgParams.pageNumber, orgParams.pageSize);
+    
+    
+        return getPaginatedResult<Organization[]>(this.baseUrl+'jobs/poster/'+id, params, this.http)
+                .pipe(map(response => {
+                    //this.jobCache.set(Object.values(jobsParams).join('-'), response);
+                    return response;
+                }));
+      }
 
     updateOrganization(organization: Organization) {
         return this.http.put(this.baseUrl + 'organizations', organization).pipe(
@@ -89,4 +105,14 @@ export class OrganizationsService {
         params = params.append('predicate', predicate);
         return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
     }
+
+    //Add new organization
+    //please add method call in registerOrganization() method in the organization-register.ts component
+    registerOrganization(model: any){
+        return this.http.post(this.baseUrl + 'organizations/add/', model);
+    }
+
+    //Add Member
+
+    
 }

@@ -40,7 +40,7 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            var roleResult = await _userManager.AddToRolesAsync(user, new[]{"Member", "Pianissimo"});
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
@@ -58,6 +58,10 @@ namespace API.Controllers
         {
             var user = await _userManager.Users
                 .Include(p => p.Photos)
+                .Include(j => j.CreatedJobs)
+                .Include(j => j.SavedJobs)
+                .Include(o => o.Affiliation)
+                .Include(o => o.LikedByOrganizations)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");

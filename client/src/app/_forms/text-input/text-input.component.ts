@@ -8,6 +8,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
   styleUrls: ['./text-input.component.css']
 })
 export class TextInputComponent implements ControlValueAccessor {
+  @Input() isTextArea = false;
   @Input() label: string;
   @Input() type = 'text';
 

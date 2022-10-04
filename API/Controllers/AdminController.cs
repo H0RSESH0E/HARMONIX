@@ -33,6 +33,7 @@ namespace API.Controllers
             return Ok(users);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("edit-roles/{username}")]
         public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
         {
@@ -53,6 +54,16 @@ namespace API.Controllers
             if (!result.Succeeded) return BadRequest("Failed to remove from roles");
 
             return Ok(await _userManager.GetRolesAsync(user));
+        }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpDelete("{username}")]
+        public async Task<ActionResult> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            await _userManager.DeleteAsync(user);
+
+            return NoContent();
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]

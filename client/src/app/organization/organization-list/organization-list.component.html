@@ -1,0 +1,42 @@
+
+<div class="container bg-light my-3 pt-3 rounded" >
+  <div class="row ">
+    <div class="col justify-content-right">
+      <div class="btn-group">
+        <a routerLink="/organization/register"><button class="btn btn-primary pull-right" > Post Organization</button></a>
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="row">
+    <div class="col text-center">
+      <p>{{orgs?.length}} results found</p>
+    </div>
+
+    
+  </div>
+</div>
+  
+  
+  
+  
+    <div class="d-flex flex-wrap px-3 justify-content-center">
+      <div *ngFor="let org of orgs" class="col-2" style="min-width: 187px;">
+        <app-organization-card [org]="org"></app-organization-card>
+      </div>
+    </div>
+    
+    <div class="d-flex justify-content-center" *ngIf="pagination">
+      <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;">
+      </pagination>
+    </div>

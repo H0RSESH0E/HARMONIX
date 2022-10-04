@@ -31,6 +31,18 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { JobCardComponent } from './Jobs/job-card/job-card.component';
+import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
+import { JobListComponent } from './Jobs/job-list/job-list.component';
+import { JobEditComponent } from './Jobs/job-edit/job-edit.component';
+import { OrganizationEditComponent } from './organization/organization-edit/organization-edit.component';
+import { OrganizationCardComponent } from './organization/organization-card/organization-card.component';
+import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
+import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
+import { JobRegisterComponent } from './Jobs/job-register/job-register.component';
+import { OrganizationRegisterComponent } from './organization/organization-register/organization-register.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +67,18 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
-    RolesModalComponent
+    RolesModalComponent,
+    JobCardComponent,
+    JobDetailComponent,
+    JobListComponent,
+    JobEditComponent,
+    OrganizationEditComponent,
+    OrganizationCardComponent,
+    OrganizationDetailComponent,
+    OrganizationListComponent,
+    JobRegisterComponent,
+    OrganizationRegisterComponent,
+    MultiselectComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +88,7 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

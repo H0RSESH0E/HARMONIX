@@ -11,3 +11,9 @@ img.img-thumbnail {
 input[type=file] {
   color: transparent;
 }
+
+.centering-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

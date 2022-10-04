@@ -1,25 +1,29 @@
-import { AppUser } from "./AppUser"
-import { Organization } from "./organization"
 import { Photo } from "./photo"
+import { User } from "./user"
 
 export interface Job {
     id: number
     title: string
-    organization: Organization //organization interface?
+    //Ogranization which posted this job
+    //dependant on cap72
     orgId: number
-    jobPoster: AppUser
-    jobPosterId: number //appuser interface?
-    logo?: Photo //photo interface?
+    jobPosterId: number
+    jobPosterName: string
+    logoUrl: string
     description: string
     salary: number
     city: string
     provinceOrState: string
     country: string
-    genre: string
+    genres: string
     jobType: string
     skillsRequired: string
-    applicationURL: string
+    applicationUrl: string
     dateCreated: Date
     deadline: Date
     lastUpdated: Date
-}
+
+
+
+
+  }

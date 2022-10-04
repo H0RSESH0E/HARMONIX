@@ -4,6 +4,7 @@ import { of, pipe } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
+import { PaginatedResult } from '../_models/pagination';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -18,6 +19,7 @@ export class MembersService {
     memberCache = new Map();
     user: User;
     userParams: UserParams;
+    currMem: Member;
 
     getUserParams() {
         return this.userParams
@@ -36,6 +38,9 @@ export class MembersService {
         this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
             this.user = user;
             this.userParams = new UserParams(user);
+            this.getMember(user.username).subscribe(member =>{
+                this.currMem = member;
+            });
         })
     }
 
@@ -46,10 +51,9 @@ export class MembersService {
         }
 
         let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
-
         params = params.append('minAge', userParams.minAge.toString());
         params = params.append('maxAge', userParams.maxAge.toString());
-        params = params.append('gender', userParams.jobType);
+        params = params.append('gender', userParams.gender);
         params = params.append('orderBy', userParams.orderBy);
 
         return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
@@ -69,6 +73,19 @@ export class MembersService {
         }
         return this.http.get<Member>(this.baseUrl + 'users/' + username);
     }
+
+    //Make sure its supported by back end
+    getMemberbyId(id: number) {
+        const member = [...this.memberCache.values()]
+            .reduce((arr, elem) => arr.concat(elem.result), [])
+            .find((member: Member) => member.id === id);
+
+        if (member) {
+            return of(member);
+        }
+        return this.http.get<Member>(this.baseUrl + 'users/' + id);
+    }
+
 
     updateMember(member: Member) {
         return this.http.put(this.baseUrl + 'users', member).pipe(
@@ -96,4 +113,6 @@ export class MembersService {
         params = params.append('predicate', predicate);
         return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
     }
+
+
 }

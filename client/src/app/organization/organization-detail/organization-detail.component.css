@@ -1,0 +1,19 @@
+.img-thumbnail {
+    
+    width: 18%;
+    height: 15%;
+}
+
+.card-body {
+    padding: 0 25px;
+  }
+
+  .card-footer {
+    padding: 10px 15px;
+    background-color: #fff;
+    border-top: none;
+  }
+  
+  #toast-container > div {
+    opacity:1;
+  }

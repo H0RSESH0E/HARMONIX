@@ -1,0 +1,84 @@
+<div class="row justify-content-center">
+  <div class="col-lg-8  col-md-8 col-sm-12">
+    <form
+      (ngSubmit)="addOrganizationForm.valid && addOrganization()"
+      [formGroup]="addOrganizationForm"
+      autocomplete="off"
+      class="card glass-container p-3">
+
+      <h2 class="text-center text-primary">Create Organization</h2>
+      <hr />
+      <div class="container">
+        <h4 class="text-primary">Name:</h4>
+        <app-text-input
+          [formControl]="$any(addOrganizationForm.controls['name'])"
+          [label]="'Organization Name'"
+        ></app-text-input>
+
+        <h4 class="text-primary">Established:</h4>
+        <app-text-input
+          [formControl]="$any(addOrganizationForm.controls['established'])"
+          [label]="'Established'"
+        ></app-text-input>
+
+        <h4 class="text-primary">Location Details:</h4>
+        <div class="form-inline m-4">
+          <h6 class="text-primary">City:</h6>
+          <app-text-input
+            [formControl]="$any(addOrganizationForm.controls['city'])"
+            [label]="'City'"
+          ></app-text-input>
+          
+          <h6 class="text-primary ml-2">Province/State:</h6>
+          <app-text-input
+            [formControl]="$any(addOrganizationForm.controls['provinceOrState'])"
+            [label]="'Province/State'"
+          ></app-text-input>
+
+          <h6 class="text-primary ml-2">Country:</h6>
+          <app-text-input
+            [formControl]="$any(addOrganizationForm.controls['country'])"
+            [label]="'Country'"
+          ></app-text-input>
+        </div>
+
+        <h4 class="text-primary mt-4">Introduction:</h4>
+        <app-text-input
+            [formControl]="$any(addOrganizationForm.controls['introduction'])"
+            [label]="'Introduction'"
+            [isTextArea]="true"
+          ></app-text-input>
+        <!-- implement text area here instead of app-text-input  <textarea></textarea> -->
+    
+        <div class="row mt-2" *ngIf="validationErrors && validationErrors.length > 0">
+            <ul class="text-danger">
+                <li *ngFor="let error of validationErrors">
+                    {{ error }}
+                </li>
+            </ul>
+        </div>
+
+        <!-- <h4 class="mt-4">Edit Photos:</h4>
+        <div class="bg-light round-textbox">
+          <div class="p-3">
+            <app-photo-editor [member]="organization"></app-photo-editor>
+          </div>
+        </div> -->
+    
+        <div
+          class="container form-group"
+          style="display: flex; justify-content: center"
+        >
+          <button class="btn btn-primary" style="margin: 10px">Create Organization</button>
+          <button
+            class="btn btn-outline-primary"
+            (click)="cancel()"
+            style="margin: 10px">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+    
+  </div>
+</div>

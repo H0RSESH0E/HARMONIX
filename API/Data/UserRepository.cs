@@ -8,76 +8,94 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-  public class UserRepository : IUserRepository
-  {
-    private readonly DataContext _context;
-    private readonly IMapper _mapper;
-
-    public UserRepository(DataContext context, IMapper mapper)
+    public class UserRepository : IUserRepository
     {
-      _context = context;
-      _mapper = mapper;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+
+        public UserRepository(DataContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<MemberDto> GetMemberAsync(string username)
+        {
+            return await _context.Users
+              .Where(x => x.UserName == username)
+              .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+              .SingleOrDefaultAsync();
+        }
+
+        public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
+        {
+            var query = _context.Users.AsQueryable();
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
+
+            if (userParams.Occupation != null)
+                query = query.Where(u => u.Occupation.ToLower().Trim().Contains(userParams.Occupation.ToLower().Trim()));
+            if (userParams.Skill != null)
+                query = query.Where(u => u.Skills.ToLower().Trim().Contains(userParams.Skill.ToLower().Trim()));
+            if (userParams.Genre != null)
+                query = query.Where(u => u.Genres.ToLower().Trim().Contains(userParams.Genre.ToLower().Trim()));
+            if (userParams.City != null)
+                query = query.Where(u => u.City.ToLower().Trim().Contains(userParams.City.ToLower().Trim()));
+            if (userParams.ProvinceOrState != null)
+                query = query.Where(u => u.ProvinceOrState.ToLower().Trim().Contains(userParams.ProvinceOrState.ToLower().Trim()));
+            if (userParams.Country != null)
+                query = query.Where(u => u.Country.ToLower().Trim().Contains(userParams.Country.ToLower().Trim()));
+
+            query = query.Where(u => u.Gender == userParams.Gender); // Delete this when ready
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1); // Not really needed
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge); // Not really needed
+
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob); // Not really needed
+
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.Created),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+
+            return await PagedList<MemberDto>.CreateAsync(
+              query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+              userParams.PageNumber,
+              userParams.PageSize
+            );
+        }
+
+        public async Task<AppUser> GetUserByIdAsync(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<AppUser> GetUserByUsernameAsync(string username)
+        {
+            return await _context.Users
+              .Include(p => p.Photos)
+              .Include(j => j.CreatedJobs)
+              .Include(j => j.SavedJobs)
+              .SingleOrDefaultAsync(x => x.UserName == username);
+        }
+
+        public async Task<IEnumerable<AppUser>> GetUsersAsync()
+        {
+            return await _context.Users
+              .Include(p => p.Photos)
+              .Include(j => j.CreatedJobs)
+              .Include(j => j.SavedJobs)
+              .ToListAsync();
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public void Update(AppUser user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+        }
     }
-
-    public async Task<MemberDto> GetMemberAsync(string username)
-    {
-      return await _context.Users
-        .Where(x => x.UserName == username)
-        .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-        .SingleOrDefaultAsync();
-    }
-
-    public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
-    {
-      var query = _context.Users.AsQueryable();
-      query = query.Where(u => u.UserName != userParams.CurrentUsername);
-      query = query.Where(u => u.Gender == userParams.Gender);
-
-    var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
-    var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
-
-    query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
-
-    query = userParams.OrderBy switch
-    {
-      "created" => query.OrderByDescending(u => u.Created),
-      _ => query.OrderByDescending(u => u.LastActive)
-    };
-
-    return await PagedList<MemberDto>.CreateAsync(
-      query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsNoTracking(),
-      userParams.PageNumber, 
-      userParams.PageSize
-    );
-    }
-
-    public async Task<AppUser> GetUserByIdAsync(int id)
-    {
-      return await _context.Users.FindAsync(id);
-    }
-
-    public async Task<AppUser> GetUserByUsernameAsync(string username)
-    {
-      return await _context.Users
-        .Include(p => p.Photos)
-        .SingleOrDefaultAsync(x => x.UserName == username);
-    }
-
-    public async Task<IEnumerable<AppUser>> GetUsersAsync()
-    {
-      return await _context.Users
-        .Include(p => p.Photos)
-        .ToListAsync();
-    }
-
-    public async Task<bool> SaveAllAsync()
-    {
-      return await _context.SaveChangesAsync() > 0;
-    }
-
-    public void Update(AppUser user)
-    {
-      _context.Entry(user).State = EntityState.Modified;
-    }
-  }
 }

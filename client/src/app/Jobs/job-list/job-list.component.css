@@ -1,0 +1,13 @@
+select.form-control {
+    padding-bottom: 0;
+    padding-top   : 0;
+    padding-right : 0;
+}
+
+.right{
+    float:right;
+}
+
+* {
+  box-sizing: border-box;
+}

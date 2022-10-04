@@ -1,0 +1,94 @@
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <form
+        (ngSubmit)="registerForm.valid && register()"
+        [formGroup]="registerForm"
+        autocomplete="off"
+        class="card p-3"
+      >
+        <h2 class="text-center text-primary">Post New job</h2>
+        <hr />
+        <div class="container">
+          <app-text-input
+            [formControl]="$any(registerForm.controls['title'])"
+            [label]="'Title'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['confirmedOrgId'])"
+            [label]="'Organization ID'"
+          ></app-text-input>
+          <!-- Let's remove the job logo upload. LinkedIn uses company logo and Indeed got none -->
+          <app-text-input
+            [formControl]="$any(registerForm.controls['logoUrl'])"
+            [label]="'URL for job Logo'"
+          ></app-text-input>
+          <!-- End of Deprecated Element -->
+          <app-text-input
+            [formControl]="$any(registerForm.controls['description'])"
+            [label]="'Job Description'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['salary'])"
+            [label]="'salary'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['city'])"
+            [label]="'city'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['provinceOrState'])"
+            [label]="'province'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['country'])"
+            [label]="'country'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['genres'])"
+            [label]="'genres'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['jobType'])"
+            [label]="'jobType'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['skillsRequired'])"
+            [label]="'skillsRequired'"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="$any(registerForm.controls['applicationUrl'])"
+            [label]="'applicationUrl'"
+          ></app-text-input>
+
+          <app-date-input
+            [formControl]="$any(registerForm.controls['deadline'])"
+            [label]="'deadline'"
+          ></app-date-input>
+
+      
+          <div class="row mt-2" *ngIf="validationErrors && validationErrors.length > 0">
+              <ul class="text-danger">
+                  <li *ngFor="let error of validationErrors">
+                      {{ error }}
+                  </li>
+              </ul>
+          </div>
+      
+          <div
+            class="container form-group"
+            style="display: flex; justify-content: center"
+          >
+            <button [disabled]="!registerForm.valid" class="btn btn-primary" style="margin: 10px">Post Job</button>
+            <button
+              class="btn btn-outline-primary"
+              (click)="cancel()"
+              style="margin: 10px"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+      
+    </div>
+  </div>
