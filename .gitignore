@@ -461,10 +461,6 @@ harmonix.db.wal
 API/harmonix.db-shm
 API/harmonix.db-wal
 
-
-API/Migrations
-API/Data/Migrations
-DataContextModelSnapshot.cs
 API/harmonix.db-shm
 API/harmonix.db-wal
 API/harmonix.db~Stashed changes
