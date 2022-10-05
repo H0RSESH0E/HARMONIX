@@ -25,7 +25,7 @@ export class OrganizationRegisterComponent implements OnInit {
   initializeForm(){
     this.addOrganizationForm = this.fb.group({
       name: ['', Validators.required],
-      established: [''],
+      established: [0],
       city: [''],
       provinceOrState: [''],
       country: [''],
@@ -61,15 +61,9 @@ export class OrganizationRegisterComponent implements OnInit {
   }
 
   addOrganization() {
-    console.log("add organization");
-    console.log(this.addOrganizationForm.value);
-    /**
-     * After organization service has method to add organization
-     * uncomment below code
-     */
-
     this.organizationService.registerOrganization(this.addOrganizationForm.value).subscribe(res => {
       this.router.navigateByUrl('/organizations');
+      this.toastr.success("Organization addedd successfully!")
     }, error => {
       console.log(error);
       this.validationErrors = error;

@@ -464,3 +464,4 @@ API/harmonix.db-wal
 
 API/Migrations
 API/Data/Migrations
+DataContextModelSnapshot.cs

@@ -47,8 +47,17 @@ export class JobsService {
 
     let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
 
+    var regex = /^[a-zA-Z0-9 ]+$/g; //checks if the string is just empty spaces could be improved
+    if(regex.test(jobsParams.title) && jobsParams.title)
+    {
+      jobsParams.title = jobsParams.title.replace(" ", "%20");
+    }
+
+    params = params.append('title', jobsParams.title);
     params = params.append('jobType', jobsParams.jobType);
+    params = params.append('selfPost', jobsParams.selfPost);
     params = params.append('orderBy', jobsParams.orderBy);
+    console.log(jobsParams)
 
     return getPaginatedResult<Job[]>(this.baseUrl + 'jobs', params, this.http)
       .pipe(map(response => {
@@ -90,14 +99,14 @@ export class JobsService {
             }));
   }
 
-  updateJob(job: Job) {
-    return this.http.put(this.baseUrl + 'jobs/' + job.id, job);
-    /*.pipe(
+  updateJob(job: Job, id: number) {
+    return this.http.put(this.baseUrl + 'jobs/' + id, job)
+    .pipe(
       map(() => {
-        const index = this.jobUpdate.indexOf(jobUpdate);
-        this.jobs[index] = jobUpdate;
+        const index = this.jobs.indexOf(job);
+        this.jobs[index] = job;
       })
-    );*/
+    );
   }
 
   saveJob(id: number) {
@@ -111,6 +120,9 @@ export class JobsService {
   }
 
   registerJob(model: any) {
+
+    //console.log(model);
+    
     return this.http.post(this.baseUrl + 'jobs/add', model);
   }
 

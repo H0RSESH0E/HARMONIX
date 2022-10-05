@@ -23,7 +23,7 @@ export class OrganizationCardComponent implements OnInit {
   }
 
   addLike(org: Organization) {
-    this.orgsServices.addLike(org.name).subscribe(() => {
+    this.orgsServices.addLike(org.id).subscribe(() => {
       this.toastr.success('You have liked ' + org.name);
     })
   }

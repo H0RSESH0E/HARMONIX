@@ -1,5 +1,3 @@
-<p>organization-register works!</p>
-
 <div class="row justify-content-center">
   <div class="col-lg-8  col-md-8 col-sm-12">
     <form
@@ -48,6 +46,7 @@
         <app-text-input
             [formControl]="$any(addOrganizationForm.controls['introduction'])"
             [label]="'Introduction'"
+            [isTextArea]="true"
           ></app-text-input>
         <!-- implement text area here instead of app-text-input  <textarea></textarea> -->
     
@@ -59,12 +58,12 @@
             </ul>
         </div>
 
-        <h4 class="mt-4">Edit Photos:</h4>
+        <!-- <h4 class="mt-4">Edit Photos:</h4>
         <div class="bg-light round-textbox">
           <div class="p-3">
             <app-photo-editor [member]="organization"></app-photo-editor>
           </div>
-        </div>
+        </div> -->
     
         <div
           class="container form-group"

@@ -22,5 +22,6 @@ namespace API.Interfaces
     Task<OrganizationDto> GetCompactOrganizationByIdAsync(int id);
     Task<PagedList<OrgMemberDto>> GetMembersByOrganizationIdAsync(UserParams userParams, int id);
     Task<PagedList<JobDto>> GetJobsByOrganizationIdAsync(JobParams jobParams, int id);
+    bool DeleteOrganizationById(int id);
     }
 }

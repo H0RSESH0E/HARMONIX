@@ -29,11 +29,11 @@ export class JobRegisterComponent implements OnInit {
   initializeForm() {
     this.registerForm = this.fb.group ({
       title: ['', Validators.required],
-      confirmedOrgId: ['', Validators.required],
+      confirmedOrgId: [''],
       // ! Let's remove logoUrl from this. Let's use OrgPhoto instead (already set by the backend)
       logoUrl: ['', Validators.required],
       description: ['', Validators.required],
-      salary: ['', Validators.required],
+      salary: [''],
       city: ['', Validators.required],
       provinceOrState: ['', Validators.required],
       country: ['', Validators.required],
@@ -49,6 +49,7 @@ export class JobRegisterComponent implements OnInit {
     // })
   }
 
+  /*
   strong(): ValidatorFn {
     return (control: AbstractControl) => {
       let hasNumber = /\d/.test(control?.value);
@@ -63,9 +64,10 @@ export class JobRegisterComponent implements OnInit {
       return null;
     }
     
-    
+  
     
   }
+  */
 
   matchValues(matchTo: string): ValidatorFn {
     return (control: AbstractControl) => {
@@ -75,6 +77,9 @@ export class JobRegisterComponent implements OnInit {
   }
 
   register() {
+
+    console.log(this.registerForm.value);
+
     this.jobService.registerJob(this.registerForm.value).subscribe(res => {
       this.router.navigateByUrl('/jobs');
     }, error => {

@@ -44,6 +44,9 @@ import { OrganizationRegisterComponent } from './organization/organization-regis
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
 import { JobSavedComponent } from './Jobs/job-saved/job-saved.component';
+import { OrgLikedComponent } from './organization/org-liked/org-liked.component';
+import { LearnMoreComponent } from './learn-more/learn-more.component';
+import { PricingComponent } from './pricing/pricing.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +83,10 @@ import { JobSavedComponent } from './Jobs/job-saved/job-saved.component';
     JobRegisterComponent,
     OrganizationRegisterComponent,
     MultiselectComponent,
-    JobSavedComponent
+    LearnMoreComponent,
+    PricingComponent,
+    JobSavedComponent,
+    OrgLikedComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,162 @@
+[
+  '{{repeat(10)}}',
+  {
+    "UserName": '{{firstName("female")}}',
+    "FirstName": function() { return this.UserName; },
+    "LastName": '{{surname()}}',
+    "Gender": 'female',
+    "DateOfBirth": '{{date(new Date(1950,0,1), new Date(2002, 11, 31), "YYYY-MM-dd")}}',
+    "KnownAs": function(){ return this.UserName; },
+    "Email": '{{email([random])}}',    
+    "Created": '{{date(new Date(2019, 0, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "LastActive": '{{date(new Date(2020, 4, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "Introduction": '{{lorem(1, "paragraphs")}}',
+    "LookingFor": "",
+    "Interests": "{{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}",
+    "Occupation": "{{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}, {{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}",
+    "Skills": "{{random(['Singing']+['Songwriting']+['Ukulele']+['Keyboard']+['Guitar']+['Violin']+['Harp']+['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Keyboard'],['Guitar'],['Violin'],['Harp'],['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}",
+    "Genres": "{{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}, {{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}",
+    "City": '{{city()}}',
+    "ProvinceOrState": '{{state()}}',
+    "Country": '{{country()}}',
+    "Photos": [
+      {
+          Url: function(num) {                         
+          return 'https://randomuser.me/api/portraits/women/' + num.integer(1,99) + '.jpg';
+        },
+        IsMain: true
+      }
+    ]    
+  },
+  '{{repeat(10)}}',
+  {
+    "UserName": '{{firstName("male")}}',
+    "FirstName": function() { return this.UserName; },
+    "LastName": '{{surname()}}',
+    "Gender": 'male',
+    "DateOfBirth": '{{date(new Date(1950,0,1), new Date(2002, 11, 31), "YYYY-MM-dd")}}',
+    "KnownAs": function(){ return this.UserName; },
+    "Email": '{{email([random])}}',    
+    "Created": '{{date(new Date(2019, 0, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "LastActive": '{{date(new Date(2020, 4, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "Introduction": '{{lorem(1, "paragraphs")}}',
+    "LookingFor": "",
+    "Interests": "{{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}",
+    "Occupation": "{{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}, {{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}",
+    "Skills": "{{random(['Singing']+['Songwriting']+['Ukulele']+['Keyboard']+['Guitar']+['Violin']+['Harp']+['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Keyboard'],['Guitar'],['Violin'],['Harp'],['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}",
+    "Genres": "{{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}, {{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}",
+    "City": '{{city()}}',
+    "ProvinceOrState": '{{state()}}',
+    "Country": '{{country()}}',
+    "Photos": [
+      {
+          Url: function(num) {                         
+          return 'https://randomuser.me/api/portraits/men/' + num.integer(1,99) + '.jpg';
+        },
+        IsMain: true
+      }
+    ]    
+  },
+  '{{repeat(10)}}',
+  {
+    "UserName": '{{firstName()}}',
+    "FirstName": function() { return this.UserName; },
+    "LastName": '{{surname()}}',
+    "Gender": 'non-binary',
+    "DateOfBirth": '{{date(new Date(1950,0,1), new Date(2002, 11, 31), "YYYY-MM-dd")}}',
+    "KnownAs": function(){ return this.UserName; },
+    "Email": '{{email([random])}}',    
+    "Created": '{{date(new Date(2019, 0, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "LastActive": '{{date(new Date(2020, 4, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "Introduction": '{{lorem(1, "paragraphs")}}',
+    "LookingFor": "",
+    "Interests": "{{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}",
+    "Occupation": "{{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}, {{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}",
+    "Skills": "{{random(['Singing']+['Songwriting']+['Ukulele']+['Keyboard']+['Guitar']+['Violin']+['Harp']+['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Keyboard'],['Guitar'],['Violin'],['Harp'],['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}",
+    "Genres": "{{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}, {{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}",
+    "City": '{{city()}}',
+    "ProvinceOrState": '{{state()}}',
+    "Country": '{{country()}}',
+    "Photos": [
+      {
+          Url: function(num) {
+          var gender;
+          if (Math.random() < 0.5)
+            gender = women;
+          else
+            gender = men;
+          return 'https://randomuser.me/api/portraits/' + gender + '/' + num.integer(1,99) + '.jpg';
+        },
+        IsMain: true
+      }
+    ]    
+  },
+  '{{repeat(10)}}',
+  {
+    "UserName": '{{firstName()}}',
+    "FirstName": function() { return this.UserName; },
+    "LastName": '{{surname()}}',
+    "Gender": 'unidentified',
+    "DateOfBirth": '{{date(new Date(1950,0,1), new Date(2002, 11, 31), "YYYY-MM-dd")}}',
+    "KnownAs": function(){ return this.UserName; },
+    "Email": '{{email([random])}}',    
+    "Created": '{{date(new Date(2019, 0, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "LastActive": '{{date(new Date(2020, 4, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "Introduction": '{{lorem(1, "paragraphs")}}',
+    "LookingFor": "",
+    "Interests": "{{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}",
+    "Occupation": "{{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}, {{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}",
+    "Skills": "{{random(['Singing']+['Songwriting']+['Ukulele']+['Keyboard']+['Guitar']+['Violin']+['Harp']+['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Keyboard'],['Guitar'],['Violin'],['Harp'],['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}",
+    "Genres": "{{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}, {{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}",
+    "City": '{{city()}}',
+    "ProvinceOrState": '{{state()}}',
+    "Country": '{{country()}}',
+    "Photos": [
+      {
+          Url: function(num) {
+          var gender;
+          if (Math.random() < 0.5)
+            gender = women;
+          else
+            gender = men;
+          return 'https://randomuser.me/api/portraits/' + gender + '/' + num.integer(1,99) + '.jpg';
+        },
+        IsMain: true
+      }
+    ]    
+  },
+  '{{repeat(10)}}',
+  {
+    "UserName": '{{firstName()}}',
+    "FirstName": function() { return this.UserName; },
+    "LastName": '{{surname()}}',
+    "Gender": 'other',
+    "DateOfBirth": '{{date(new Date(1950,0,1), new Date(2002, 11, 31), "YYYY-MM-dd")}}',
+    "KnownAs": function(){ return this.UserName; },
+    "Email": '{{email([random])}}',    
+    "Created": '{{date(new Date(2019, 0, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "LastActive": '{{date(new Date(2020, 4, 1), new Date(2020,5,30), "YYYY-MM-dd")}}',
+    "Introduction": '{{lorem(1, "paragraphs")}}',
+    "LookingFor": "",
+    "Interests": "{{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Guitar'],['Piano'],['Storytelling'],['Animals'],['Cars'],['Sports'],['Exercise'],['Reading'])}}",
+    "Occupation": "{{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}, {{random(['Singer'],['Songwriter'],['Ukulelist'],['Guitarist'],['Pianist'],['Violinist'],['DJ'],['Sound Engineer'],['Music Director'],['Drummer'],['Conductor'])}}",
+    "Skills": "{{random(['Singing']+['Songwriting']+['Ukulele']+['Keyboard']+['Guitar']+['Violin']+['Harp']+['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}, {{random(['Singing'],['Songwriting'],['Ukulele'],['Keyboard'],['Guitar'],['Violin'],['Harp'],['Piano'], ['Playing by Ear'], ['Impressions'], ['Mixing'], ['Opera'], ['Symphony'])}}",
+    "Genres": "{{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}, {{random(['Easy Listerning'], ['Beach Vibe'], ['Alternative'], ['Indie'], ['Jazz'], ['Rock'], ['Pop'], ['Heavy metal'], ['Country'], ['Blues'], ['Dance'], ['Folk'], ['Classical'], ['Reggae'], ['Soul'], ['Hip hop'], ['Rap'], ['Opera'], ['Symphony'])}}",
+    "City": '{{city()}}',
+    "ProvinceOrState": '{{state()}}',
+    "Country": '{{country()}}',
+    "Photos": [
+      {
+          Url: function(num) {
+          var gender;
+          if (Math.random() < 0.5)
+            gender = women;
+          else
+            gender = men;
+          return 'https://randomuser.me/api/portraits/' + gender + '/' + num.integer(1,99) + '.jpg';
+        },
+        IsMain: true
+      }
+    ]    
+  }
+]

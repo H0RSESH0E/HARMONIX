@@ -1,55 +1,76 @@
-
-<div class="container bg-light my-3 pt-3 rounded" >
-    <div class="row">
-      <div class="col-9">
-        <form class="form-inline" autocomplete="off">
-            <label class="text-primary m-1">Search For:</label>
-            <input class="form-control m-1" type="text" name="title" [(ngModel)]="title">
-            <button (click)="btnClick()" class="btn btn-info m-1" type="submit">Search</button>
-        </form>
-      </div>
-      <div class="col-3">
-        <div class="btn-group">
-            <a routerLink="/job/new_post"><button class="btn btn-primary pull-right" > Post job</button></a>
-          <button *ngIf="this.member"
-            type="button"
-            class="btn btn-primary" 
-            name="orderBy" 
-            (click)="loadJobsByUserId(this.member.id)"
-            btnRadio="created">Posted by me</button>
-        </div>
-      </div>
-
+<div class="container mt-3 bg-light my-3 pt-3 rounded">
+  <form
+    #form="ngForm"
+    class="form-inline mb-3"
+    (ngSubmit)="loadJobs()"
+    autocomplete="off"
+  >
+    <form class="form-inline" autocomplete="off">
+      <label class="text-primary m-1">Search For:</label>
+      <input
+        class="form-control m-1"
+        type="text"
+        name="title"
+        [(ngModel)]="jobParams.title"
+      />
+    </form>
+    <div class="form-group px-2">
+      <label class="text-primary">Job Type: </label>
+      <select
+        name="jobType"
+        [(ngModel)]="jobParams.jobType"
+        class="form-control ml-1"
+      >
+        <option
+          *ngFor="let jobType of jobTypeList"
+          [value]="jobType.item_text.toLowerCase()"
+        >
+          {{ jobType.item_text }}
+        </option>
+      </select>
     </div>
-    
-    <div class="row">
-      <div class="col text-center">
-        <p>{{jobs?.length}} results found</p>
-      </div>
-
-      
+    <div class="form-group px-2">
+      <label class="text-primary"
+        >Posted By Me:
+        <input
+          type="checkbox"
+          name="selfPost"
+          [(ngModel)]="jobParams.selfPost"
+        />
+      </label>
+    </div>
+    <button class="btn btn-primary ml-1" type="submit">Search</button>
+    <button (click)="resetFilters()" class="btn btn-primary ml-1" type="submit">
+      Reset Filters
+    </button>
+    <a routerLink="/job/new_post"
+      ><button class="btn btn-info ml-5">Post job</button></a
+    >
+  </form>
+  <div class="row">
+    <div class="col text-center">
+      <p>{{ pagination?.totalItems }} results found</p>
     </div>
   </div>
+</div>
 
-
-
-
-  <div class="d-flex flex-wrap px-3 justify-content-center">
-    <div *ngFor="let job of jobs" class="col-2" style="min-width: 187px;">
-      <app-job-card [job]="job"></app-job-card>
-    </div>
+<div class="d-flex flex-wrap px-3 justify-content-center">
+  <div *ngFor="let job of jobs" class="col-2" style="min-width: 187px">
+    <app-job-card [job]="job"></app-job-card>
   </div>
-  
-  <div class="d-flex justify-content-center" *ngIf="pagination">
-    <pagination 
-      [boundaryLinks]="true" 
-      [totalItems]="pagination.totalItems"
-      [itemsPerPage]="pagination.itemsPerPage"
-      [(ngModel)]="pagination.currentPage"
-      (pageChanged)="pageChanged($event)"
-      previousText="&lsaquo;" 
-      nextText="&rsaquo;" 
-      firstText="&laquo;" 
-      lastText="&raquo;">
-    </pagination>
-  </div>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemsPerPage"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>

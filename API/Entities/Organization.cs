@@ -4,6 +4,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string OrgType { get; set; }
         public string Introduction { get; set; }
         public int Established { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
@@ -16,10 +17,5 @@ namespace API.Entities
         public ICollection<Job> Jobs { get; set; }
         public ICollection<OrgLike> LikedByUser { get; set; }
         public ICollection<OrgPhoto> Photos { get; set; }
-        //public OwnedOrganization OwnedByUser { get; set; }
-        public ICollection<OrgLike> LikedOrganizations { get; set; }
-
-        
-
     }
 }

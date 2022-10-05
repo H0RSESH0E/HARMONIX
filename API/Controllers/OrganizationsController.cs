@@ -56,12 +56,19 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrganizationDto>> GetOrganizationById(int id)
         {
-            return await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+            var organization = await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+
+            if (organization == null) return NotFound(); 
+
+            return Ok(organization);
         }
 
         [HttpGet("{id}/users")]
         public async Task<ActionResult<IEnumerable<OrgMemberDto>>> GetMembersByOrganizationId([FromQuery] UserParams userParams, int id)
         {
+            var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound("Organization not found");
+
             var members = await _organizationRepository.GetMembersByOrganizationIdAsync(userParams, id);
 
             Response.AddPaginationHeader(members.CurrentPage, members.PageSize,
@@ -73,7 +80,11 @@ namespace API.Controllers
         [HttpGet("{id}/jobs")]
         public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByOrganizationId([FromQuery] JobParams jobParams, int id)
         {
+            var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound("Organization not found");
+
             var jobs = await _organizationRepository.GetJobsByOrganizationIdAsync(jobParams, id);
+            // if (jobs == null) return Ok(new PagedList<object>(new object[0],0,1,1));
 
             Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
         jobs.TotalCount, jobs.TotalPages);
@@ -82,9 +93,21 @@ namespace API.Controllers
         }
 
         [HttpGet("owned")]
-        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOwnedOrganizations([FromQuery] OrganizationParams organizationParams)
+        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOwnedOrganizations([FromQuery] OrganizationParams organizationParams, string username = null)
         {
-            var id = User.GetUserId();
+            int id;
+            
+            if (username != null)
+            {
+                var user = await _userRepository.GetUserByUsernameAsync(username);
+                if (user == null) return NotFound("This username does not exist.");
+                id = user.Id;
+            }
+            else
+            {
+                id = User.GetUserId();
+            }
+
             var organizations = await _organizationRepository.GetOwnedOrganizationsAsync(organizationParams, id);
 
             Response.AddPaginationHeader(organizations.CurrentPage, organizations.PageSize,
@@ -95,9 +118,21 @@ namespace API.Controllers
         }
 
         [HttpGet("affiliated")]
-        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetAffiliatedOrganizations([FromQuery] OrganizationParams organizationParams)
+        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetAffiliatedOrganizations([FromQuery] OrganizationParams organizationParams, string username = null)
         {
-            var id = User.GetUserId();
+            int id;
+
+            if (username != null)
+            {
+                var user = await _userRepository.GetUserByUsernameAsync(username);
+                if (user == null) return NotFound("This username does not exist.");
+                id = user.Id;
+            }
+            else
+            {
+                id = User.GetUserId();
+            }
+
             var organizations = await _organizationRepository.GetAffiliatedOrganizationsAsync(organizationParams, id);
 
             Response.AddPaginationHeader(organizations.CurrentPage, organizations.PageSize,
@@ -110,15 +145,16 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOrganization(OrganizationUpdateDto organizationUpdateDto, int id)
         {
-            var user = _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
-            if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization!");
-            _mapper.Map<Organization>(organization);
+            if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization! Becuase you are not the owner");
+
+            _mapper.Map(organizationUpdateDto, organization);
             _organizationRepository.Update(organization);
 
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
-            return BadRequest("Failed to update user");
+            return BadRequest("Failed to update organization");
         }
 
         [HttpPost("add-photo")]
@@ -189,44 +225,74 @@ namespace API.Controllers
             if (await _organizationRepository.SaveAllAsync())
             {
                 var updatedOwnedOrgs = await _organizationRepository.GetOwnedOrganizationsRawAsync(user.Id);
-                var thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                var thisOrg = updatedOwnedOrgs.FirstOrDefault(x => x.Name == organizationRegisterDto.Name);
+
+                if (updatedOwnedOrgs.Count() > 1)
+                    thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+
+                if (thisOrg == null)
+                    return BadRequest("Error associating the new organization with your account");
+
                 thisOrg.Members.Add(user);
 
                 if (!userRoles.Contains("OrgAdmin"))
                     await _userManager.AddToRoleAsync(user, "OrgAdmin");
 
+                if (updatedOwnedOrgs.Count() == 1)
+                {
+                    await _organizationRepository.SaveAllAsync();
+                    return NoContent();
+                }
+
                 if (await _organizationRepository.SaveAllAsync())
                 {
                     return NoContent();
-                } else
-                {
-                    return BadRequest("Organization is created but failed to associate it with your account.");
                 }
+                return BadRequest("Organization is created but failed to associate it with your account.");
             }
 
             return BadRequest("Failed to add organization");
 
         }
 
-        [Authorize(Policy = "RequireOrgAdminRole")]
+        //[Authorize(Policy = "RequireOrgAdminRole")]
         [HttpPost("add-member/{id}")]
         public async Task<ActionResult<Organization>> AddMember(string username, int id)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
-            user = _mapper.Map<AppUser>(user);
-            var owner = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound("Organization not found");
 
-            if (org.OwnerId != owner.Id)
-                return BadRequest("Failed to add member. You are not the owner. Nice try ;)");
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if (user == null) return NotFound("User not found by this username");
+            user = _mapper.Map<AppUser>(user);
 
             if (org.Members.Contains(user)) return BadRequest("This user is already a member of this organization.");
 
+            // ! Private feature
+            // var owner = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            // if (owner == null) return NotFound("Credential doesn't exist. Please log in again");
+
+            // var userRoles = await _userManager.GetRolesAsync(user);
+            // var IsOwner = org.OwnerId == owner.Id;
+            // var IsAdmin = userRoles.Contains("Admin");
+            // var IsModerator = userRoles.Contains("Moderator");
+            // var IsOrgMember = owner.Affiliation != null && owner.Affiliation.Contains(org);
+
+            // if (IsOwner || IsAdmin || IsModerator || IsOrgMember)
+            // {
+            //     org.Members.Add(user);
+            //     if (await _organizationRepository.SaveAllAsync())
+            //         return NoContent();
+            // }
+            // return Unauthorized("You are not permitted to perform this action.");
+
+            // ! Public feauture
             org.Members.Add(user);
+
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
 
-            return BadRequest("Failed to add member.");
+            return BadRequest("Failed to add member");
         }
 
         [HttpDelete("delete-photo/{photoId}")]
@@ -257,6 +323,37 @@ namespace API.Controllers
             if (await _userRepository.SaveAllAsync()) return Ok();
 
             return BadRequest("Failed to delete the photo");
+        }
+
+        // DELETE organization
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> DeleteOrganization(int id)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (user == null) return BadRequest("User not found");
+
+            var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound();
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var IsOwner = org.OwnerId == user.Id;
+            var IsAdmin = userRoles.Contains("Admin");
+            var IsModerator = userRoles.Contains("Moderator");
+
+            if (IsOwner || IsAdmin || IsModerator)
+            {
+                var isDeleted = _organizationRepository.DeleteOrganizationById(id);
+                if (isDeleted)
+                {
+                    if (await _organizationRepository.SaveAllAsync())
+                        return Ok("Organization has successfully been deleted!");
+                    
+                    return BadRequest("Failed to delete the organization");
+                }
+                return BadRequest("Failed to delete the organization");
+            }
+            
+            return Unauthorized("You are must be the owner of this organization to perform this action");
         }
     }
 }

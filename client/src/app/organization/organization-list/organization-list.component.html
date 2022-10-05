@@ -4,6 +4,12 @@
     <div class="col justify-content-right">
       <div class="btn-group">
         <a routerLink="/organization/register"><button class="btn btn-primary pull-right" > Post Organization</button></a>
+        <button *ngIf="this.member"
+        type="button"
+        class="btn btn-primary" 
+        name="orderBy" 
+        (click)="loadOrganizationsByUserId(this.member.id)"
+        btnRadio="created">Posted by me</button>
       </div>
     </div>
 

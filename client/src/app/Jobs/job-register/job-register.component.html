@@ -16,6 +16,7 @@
           <app-text-input
             [formControl]="$any(registerForm.controls['confirmedOrgId'])"
             [label]="'Organization ID'"
+            [type]='"number"'
           ></app-text-input>
           <!-- Let's remove the job logo upload. LinkedIn uses company logo and Indeed got none -->
           <app-text-input
@@ -30,6 +31,7 @@
           <app-text-input
             [formControl]="$any(registerForm.controls['salary'])"
             [label]="'salary'"
+            [type]='"number"'
           ></app-text-input>
           <app-text-input
             [formControl]="$any(registerForm.controls['city'])"

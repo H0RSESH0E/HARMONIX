@@ -20,5 +20,6 @@ namespace API.Interfaces
         Task<PagedList<JobDto>> GetMemberJobsAsync(JobParams jobParams);
         Task<JobDto> GetMemberJobAsync();
         Task<AppUser> GetUserByUsernameAsync(string username);
+        bool DeleteJobById(int id);
     }
 }

@@ -70,17 +70,19 @@ export class OrganizationsService {
     ////Check with nathan
     getOrgByPosterId(id: number, orgParams: OrgParams) {
         let params = getPaginationHeaders(orgParams.pageNumber, orgParams.pageSize);
+        console.log("id: "+id); 
     
-    
-        return getPaginatedResult<Organization[]>(this.baseUrl+'jobs/poster/'+id, params, this.http)
+        return getPaginatedResult<Organization[]>(this.baseUrl+'organizations/owned', params, this.http)
                 .pipe(map(response => {
                     //this.jobCache.set(Object.values(jobsParams).join('-'), response);
-                    return response;
+                     return response;
                 }));
       }
 
-    updateOrganization(organization: Organization) {
-        return this.http.put(this.baseUrl + 'organizations', organization).pipe(
+    updateOrganization(id: number, organization: Organization) {
+
+        return this.http.put(this.baseUrl + 'organizations/'+id, organization)
+        .pipe(
             map(() => {
                 const index = this.organizations.indexOf(organization);
                 this.organizations[index] = organization;
@@ -96,20 +98,19 @@ export class OrganizationsService {
         return this.http.delete(this.baseUrl + 'organizations/delete-photo/' + photoId, {})
     }
 
-    addLike(orgName: string) {
-        return this.http.post(this.baseUrl + 'likes/' + orgName, {});
+    addLike(orgId: number) {
+        return this.http.post(this.baseUrl + 'orglikes/' + orgId, {});
     }
 
     getLikes(predicate: string, pageNumber, pageSize) {
         let params = getPaginationHeaders(pageNumber, pageSize);
         params = params.append('predicate', predicate);
-        return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
+        return getPaginatedResult<Partial<Organization[]>>(this.baseUrl + 'orgLikes', params, this.http);
     }
 
     //Add new organization
     //please add method call in registerOrganization() method in the organization-register.ts component
     registerOrganization(model: any){
-        console.log(model);
         return this.http.post(this.baseUrl + 'organizations/add/', model);
     }
 

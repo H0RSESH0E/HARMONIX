@@ -1,89 +1,120 @@
 <div class="row d-flex justify-content-center">
   <div class="d-flex justify-content-center">
-    <h1 class="text-light">My Affiliation</h1>
+    <h1 class="text-light">My Affiliations</h1>
   </div>
-  <div class="col-8">
-    <div class="alert alert-info" *ngIf="editForm.dirty">
-      <strong>Information: </strong> You have made changes. Any unsaved changes
-      will be lost
+
+  <div class="col-8 glass-container  p-2" *ngIf="!(userOrgs?.length>0)">
+    <div class="aler alert-info p-4">
+      <h5>You do not have any organization/affiliations!</h5>
+    </div>
+    <div class="d-flex justify-content-center m-2">
+      <a routerLink="/organization/register"><button class="btn btn-primary pull-right"> Create Organization </button></a>
     </div>
   </div>
 
-  <div class="col-8 glass-container p-2">
-    <div class="container">
-      <form
-        #editForm="ngForm"
-        id="editForm"
-        class="container"
-        (ngSubmit)="updateOrganization()"
-      >
-        <h4>Name:</h4>
-        <input
-          [(ngModel)]="organization.name"
-          type="text"
-          name="name"
-          class="form-control mx-2 round-textbox"
-        />
-        <h4 class="mt-4">Established:</h4>
-        <input
-          [(ngModel)]="organization.established"
-          type="text"
-          name="established"
-          class="form-control mx-2 round-textbox"
-        />
-
-        <h4 class="mt-4">Location Details:</h4>
-        <div class="form-inline">
-          <label for="city">City: </label>
-          <input
-            [(ngModel)]="organization.city"
-            type="text"
-            name="city"
-            class="form-control mx-2 round-textbox"
-          />
-          <label for="city">Province/State: </label>
-          <input
-            [(ngModel)]="organization.province"
-            type="text"
-            name="city"
-            class="form-control mx-2 round-textbox"
-          />
-          <label for="city">Country: </label>
-          <input
-            [(ngModel)]="organization.country"
-            type="text"
-            name="country"
-            class="form-control mx-2 round-textbox"
-          />
-        </div>
-
-        <h4 class="mt-4">Introduction:</h4>
-        <textarea
-          class="form-control round-textbox"
-          [(ngModel)]="organization.lookingFor"
-          name="lookingFor"
-          rows="6"
-        ></textarea>
-
-        <h4 class="mt-4">Edit Photos:</h4>
-        <div class="bg-light round-textbox">
-          <div class="p-3">
-            <app-photo-editor [member]="organization"></app-photo-editor>
+  <div class="col-10 glass-container p-2" *ngIf="userOrgs?.length">
+    <div class="d-flex">
+      <div class="p-2">
+        <div *ngFor="let org of userOrgs" class="d-flex flex-row flex-wrap px-3 justify-content-start" style="max-width: 300px;">
+          <div class="p-2" (click)="load(org.id)">
+            <app-organization-card [org]="org"></app-organization-card>
           </div>
         </div>
-      </form>
+        <div class="d-flex justify-content-center" *ngIf="pagination">
+          <pagination 
+            [boundaryLinks]="true" 
+            [totalItems]="pagination.totalItems"
+            [itemsPerPage]="pagination.itemsPerPage"
+            [(ngModel)]="pagination.currentPage"
+            (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;" 
+            nextText="&rsaquo;" 
+            firstText="&laquo;" 
+            lastText="&raquo;">
+          </pagination>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="col-8">
+          <div class="alert alert-info" *ngIf="editForm.dirty">
+            <strong>Information: </strong> You have made changes. Any unsaved changes will be lost
+          </div>
+        </div>
+        <form
+          #editForm="ngForm"
+          id="editForm"
+          class="container"
+          (ngSubmit)="update()">
+          <h4>Name:</h4>
+          <input
+            [(ngModel)]="organization.name"
+            type="text"
+            name="name"
+            class="form-control mx-2 round-textbox"
+          />
+          <h4 class="mt-4">Established:</h4>
+          <input
+            [(ngModel)]="organization.established"
+            type="text"
+            name="established"
+            class="form-control mx-2 round-textbox"
+          />
 
-      <div class="d-flex justify-content-end m-4">
-        <button class="btn btn-primary mr-4">Cancel</button>
-        <button
-          [disabled]="!editForm.dirty"
-          form="editForm"
-          type="submit"
-          class="btn btn-info"
-        >
-          Save
-        </button>
+          <h4 class="mt-4">Location Details:</h4>
+          <div class="form-inline">
+            <label for="city">City: </label>
+            <input
+              [(ngModel)]="organization.city"
+              type="text"
+              name="city"
+              class="form-control mx-2 round-textbox"
+            />
+            <label for="city">Province/State: </label>
+            <input
+              [(ngModel)]="organization.province"
+              type="text"
+              name="city"
+              class="form-control mx-2 round-textbox"
+            />
+            <label for="city">Country: </label>
+            <input
+              [(ngModel)]="organization.country"
+              type="text"
+              name="country"
+              class="form-control mx-2 round-textbox"
+            />
+          </div>
+
+          <h4 class="mt-4">Introduction:</h4>
+          <textarea
+            class="form-control round-textbox"
+            [(ngModel)]="organization.lookingFor"
+            name="introduction"
+            rows="6"
+          ></textarea>
+
+          <h4 class="mt-4">Edit Photos:</h4>
+          <div class="bg-light round-textbox">
+            <div class="p-3">
+              <app-photo-editor [member]="organization"></app-photo-editor>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end m-4">
+            <button class="btn btn-primary mr-4">Cancel</button>
+            <button
+              [disabled]="!editForm.dirty"
+              form="editForm"
+              type="submit"
+              class="btn btn-info"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+
+    
+
   </div>
 </div>

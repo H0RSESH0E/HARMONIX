@@ -1,7 +1,9 @@
 import { User } from "./user";
 
 export class JobsParams {
-  jobType: string;
+  title = '';
+  jobType = '';
+  selfPost = false;
   pageNumber = 1;
   pageSize = 5;
   genres?: string;
@@ -9,7 +11,7 @@ export class JobsParams {
   city?: string;
   provinceOrState?: string;
   country?: string;
-  orderBy = 'mostRecent'; 
+  orderBy = 'mostRecent';
   // --> Other sortig options:
   // -- "alphabetical" - ascending
   // -- "deadline" - desc.
@@ -17,6 +19,5 @@ export class JobsParams {
 
   // No need for the constructor
   constructor() {
-
   }
 }

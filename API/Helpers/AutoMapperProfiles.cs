@@ -34,7 +34,8 @@ namespace API.Helpers
              .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
              src.Organization == null ? "Private Event" : src.Organization.Name))
              .ForMember(dest => dest.LogoUrl, opt => opt.MapFrom(src =>
-             src.Organization.Photos == null || src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
+             src.Organization.Photos == null || src.Organization == null 
+             ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
              : src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url));
 
             CreateMap<JobUpdateDto, Job>();
@@ -80,7 +81,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url))
                 .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
-                    src.LikedOrganizations.Count()))
+                    src.LikedByUser.Count()))
                 .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => 
                      src.Jobs.ToList()));
 
@@ -92,7 +93,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src =>
                     src.Members.Count()))
                 .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
-                    src.LikedOrganizations.Count()));
+                    src.LikedByUser.Count()));
 
             //CreateMap<AffiliationDto, Organization>();
 
@@ -105,18 +106,47 @@ namespace API.Helpers
             CreateMap<OrganizationUpdateDto, Organization>();
             CreateMap<OrganizationRegisterDto, Organization>();
             CreateMap<OrgLike, OrgLikeDto>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
                     src.Org.Name))
                 .ForMember(dest => dest.Introduction, opt => opt.MapFrom(src =>
                     src.Org.Introduction))
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.OrganizationPhotoUrl, opt => opt.MapFrom(src =>
                     src.Org.Photos.FirstOrDefault(x => x.IsMain).Url))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.OrganizationCity, opt => opt.MapFrom(src =>
                     src.Org.City))
-                .ForMember(dest => dest.ProvinceOrState, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.OrganizationState, opt => opt.MapFrom(src =>
                     src.Org.ProvinceOrState))
-                .ForMember(dest => dest.Country, opt => opt.MapFrom(src =>
-                    src.Org.Country));
+                .ForMember(dest => dest.OrganizationCountry, opt => opt.MapFrom(src =>
+                    src.Org.Country))
+                .ForMember(dest => dest.LikedUserFirstname, opt => opt.MapFrom(src =>
+                    src.LikedUser.FirstName))
+                .ForMember(dest => dest.LikedUserLastname, opt => opt.MapFrom(src =>
+                    src.LikedUser.LastName))
+                .ForMember(dest => dest.LikedUserKnownAs, opt => opt.MapFrom(src =>
+                    src.LikedUser.KnownAs))
+                .ForMember(dest => dest.LikedUserCity, opt => opt.MapFrom(src =>
+                    src.LikedUser.City))
+                .ForMember(dest => dest.LikedUserState, opt => opt.MapFrom(src =>
+                    src.LikedUser.ProvinceOrState))
+                .ForMember(dest => dest.LikedUserCountry, opt => opt.MapFrom(src =>
+                    src.LikedUser.Country))
+                .ForMember(dest => dest.LikedUserPhotoUrl, opt => opt.MapFrom(src =>
+                    src.LikedUser.Photos.FirstOrDefault(x => x.IsMain).Url));
+
+            CreateMap<Organization, OrgLikeDto>()
+            .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
+                    src.Name))
+                .ForMember(dest => dest.Introduction, opt => opt.MapFrom(src =>
+                    src.Introduction))
+                .ForMember(dest => dest.OrganizationPhotoUrl, opt => opt.MapFrom(src =>
+                    src.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.OrganizationCity, opt => opt.MapFrom(src =>
+                    src.City))
+                .ForMember(dest => dest.OrganizationState, opt => opt.MapFrom(src =>
+                    src.ProvinceOrState))
+                .ForMember(dest => dest.OrganizationCountry, opt => opt.MapFrom(src =>
+                    src.Country));
+            ;
         }
     }
 }

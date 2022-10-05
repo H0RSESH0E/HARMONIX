@@ -16,7 +16,7 @@ namespace API.Interfaces
         //list of saved job that the user has saved
         Task<AppUser> GetUserWithSavedJobs(int userId);
 
-        Task<PagedList<JobSaveDto>>  GetSavedJobs(PaginationParams pagiparams, int userId);
+        Task<PagedList<JobSaveDto>>  GetSavedJobs(JobParams jobParams, int userId);
 
         
     }

@@ -1,10 +1,21 @@
 <div class="form-group">
   <input 
+    *ngIf="!isTextArea"
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
     type="{{type}}"
     class="form-control" 
     [formControl]="ngControl.control"
     placeholder="{{label}}">
+  <textarea
+    *ngIf="isTextArea"
+    [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    class="form-control" 
+    [formControl]="ngControl.control"
+    placeholder="{{label}}"
+    rows="6"
+  >
+
+  </textarea>
   <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">
     Please Enter a {{label}}
   </div>

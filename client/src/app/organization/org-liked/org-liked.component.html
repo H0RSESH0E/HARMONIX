@@ -1,0 +1,55 @@
+<!--<div class="text-center mt-3">
+    <h2 class="text-light">Saved jobs</h2>
+</div>
+
+<div class="row">
+    <div *ngFor="let job of jobs" class="col-2">
+        <div class="card mb-4">
+            <div class="card-img-wrapper">
+                <img src="{{job.logoUrl || './assets/user.png'}}" alt="{{job.title}}" class="card-img-top">
+                <ul class="list-inline member-icons animate text-center">
+                    <li class="list-inline-item"><button routerLink="/jobs/{{job.id}}" class="btn btn-primary">
+                            <i class="fa fa-user"></i>
+                        </button></li>
+                    <li class="list-inline-item"><button (click)="removeSaveJob(job)" class="btn btn-primary">
+                            <i class="fa fa-minus"></i></button></li>
+                    
+                </ul>
+            </div>
+            <div class="card-body p-1">
+                <h6 class="card-title text-center mb-1">
+   
+                    {{job.title}}, {{job.salary}}
+                </h6>
+                <p class="card-text text-muted text-center">{{job.city}}, {{job.country}}</p>
+            </div>
+        </div>
+     </div>
+</div>
+
+<div class="container mt-3">
+    <div class="row">
+  
+      <div class="d-flex flex-wrap mt-3 justify-content-center">
+        <div *ngFor="let job of jobs" class="col-2" style="min-width: 187px;">
+          <app-job-card [job]="job"></app-job-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>-->

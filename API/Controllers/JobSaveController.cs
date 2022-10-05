@@ -59,9 +59,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobSaveDto>>> GetSavedJobs([FromQuery] PaginationParams pagiparams)
+        public async Task<ActionResult<IEnumerable<JobSaveDto>>> GetSavedJobs([FromQuery] JobParams jobParams)
         {
-            var jobs = await _jobSaveRepository.GetSavedJobs(pagiparams, User.GetUserId());
+            var jobs = await _jobSaveRepository.GetSavedJobs(jobParams, User.GetUserId());
             
             Response.AddPaginationHeader(jobs.CurrentPage,
           jobs.PageSize, jobs.TotalCount, jobs.TotalPages);

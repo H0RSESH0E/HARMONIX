@@ -6,7 +6,7 @@ export interface Job {
     title: string
     //Ogranization which posted this job
     //dependant on cap72
-    orgId: number
+    confirmedOrgId: number
     jobPosterId: number
     jobPosterName: string
     logoUrl: string

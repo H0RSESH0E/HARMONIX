@@ -1,7 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { JobsParams } from 'src/app/_models/jobParams';
+import { Member } from 'src/app/_models/member';
+import { User } from 'src/app/_models/user';
+import { AccountService } from 'src/app/_services/account.service';
+import { JobsService } from 'src/app/_services/jobs.service';
+import { MembersService } from 'src/app/_services/members.service';
 import { OrganizationsService } from 'src/app/_services/organizations.service';
+import { take } from 'rxjs/operators';
+import { OrgParams } from 'src/app/_models/orgParams';
+import { Organization } from 'src/app/_models/organization';
+import { Pagination } from 'src/app/_models/pagination';
 
 @Component({
   selector: 'app-organization-edit',
@@ -11,37 +21,56 @@ import { OrganizationsService } from 'src/app/_services/organizations.service';
 export class OrganizationEditComponent implements OnInit {
   organization: any;
   @ViewChild('editForm') editForm: NgForm;
+  user: User;
+  member: Member;
+  orgParams: OrgParams;
+  userOrgs: Organization[];
+  pagination: Pagination;
 
-  constructor(private organizationService: OrganizationsService, private toastr: ToastrService) { }
+  constructor(private organizationService: OrganizationsService, private toastr: ToastrService, 
+    private accountService: AccountService, private memberService: MembersService) {
+    this.orgParams = this.organizationService.getOrgParams();
+    this.orgParams.pageSize = 3;
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+    this.memberService.getMember(this.user.username).subscribe((m) => {
+      this.loadOrganizationsByUserId(m.id);
+      console.log(m);
+      this.member = m;
+    });
+   }
 
   ngOnInit(): void {
-    this.loadOrganization();
+    
   }
 
-  loadOrganization(){
-    this.organization = {
-      knownAs: "Test Job Title",
-      introduction: "test intro",
-      interests: "test interests",
-      lookingFor: "test looking for",
-      city: "test city",
-      province: "test province",
-      country: "test country",
-      name: "Test organization Name",
-      likes: 10,
-      members: [
-        {
-
-        },
-        {
-
-        },{},{}
-      ],
-      established: "2015",
-      about: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      photos: this.getDummyImages(),
-    };
+  loadOrganization(org: any){
+    this.organization = org;
   }
+
+  loadOrganizationsByUserId(id: number){
+    console.log(id);
+    this.organizationService.setOrgParams(this.orgParams);
+    this.organizationService.getOrgByPosterId(id, this.orgParams).subscribe((response) => {
+      if(response?.result?.length>0){
+        this.loadOrganization(response.result[0]);
+      }
+      this.userOrgs = response.result;
+      this.pagination = response.pagination;
+    });
+  }
+
+  load(id: number){
+    console.log("log id "+id);
+    this.organizationService.getOrganization(id).subscribe(
+      org => {
+        this.organization = org;
+        // this.galleryImages = this.getImages(org);
+        this.editForm.reset(org);
+      }
+    )
+
+  }
+
 
   getDummyImages(){
     var images = [];
@@ -60,12 +89,23 @@ export class OrganizationEditComponent implements OnInit {
     return images;
   }
 
-  updateOrganization(){
-    console.log("update organization");
-    this.organizationService.updateOrganization(this.organization).subscribe(() => {
+  update(){
+    this.organizationService.updateOrganization(this.organization.id, this.editForm.value).subscribe(() => {
       this.toastr.success('Profile updated successfully');
+      this.organization = this.editForm.value;
       this.editForm.reset(this.organization);
     })
+  }
+
+  resetFilters() {
+    this.orgParams = this.organizationService.resetOrgParams();
+    this.loadOrganizationsByUserId(this.member.id);
+  }
+
+  pageChanged(event: any) {
+    this.orgParams.pageNumber = event.page;
+    this.organizationService.setOrgParams(this.orgParams);
+    this.loadOrganizationsByUserId(this.member.id);
   }
 
 }

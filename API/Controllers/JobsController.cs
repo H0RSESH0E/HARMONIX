@@ -1,3 +1,4 @@
+using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -5,6 +6,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,9 +18,11 @@ namespace API.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IMapper _mapper;
         private readonly IOrganizationRepository _organizationRepository;
+        public UserManager<AppUser> _userManager { get; }
 
-        public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
+        public JobsController(UserManager<AppUser> userManager, IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
         {
+            _userManager = userManager;
             _organizationRepository = organizationRepository;
             _jobRepository = jobRepository;
             _mapper = mapper;
@@ -28,6 +32,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobDto>>> GetJobs([FromQuery] JobParams jobParams)
         {
+            jobParams.PosterID = User.GetUserId();
+
             var jobs = await _jobRepository.GetJobsAsync(jobParams);
 
             Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
@@ -92,15 +98,23 @@ namespace API.Controllers
         public async Task<ActionResult<JobRegisterDto>> AddNewJobByPosterId(JobRegisterDto jobRegisterDto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (user == null) return BadRequest("User not found");
+
             var id = jobRegisterDto.ConfirmedOrgId;
+
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound("Organization not found");
+
             var job = _mapper.Map<Job>(jobRegisterDto);
 
-            if (org != null && user != null)
-            {
-                if (user.Affiliation != null && !user.Affiliation.Contains(org))
-                    return BadRequest("You cannot post a job if you are not part of the organization.");
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var IsOwner = org.OwnerId == user.Id;
+            var IsAdmin = userRoles.Contains("Admin");
+            var IsModerator = userRoles.Contains("Moderator");
+            var IsOrgMember = user.Affiliation != null && user.Affiliation.Contains(org);
 
+            if (IsOwner || IsAdmin || IsModerator || IsOrgMember)
+            {
                 job.JobPoster = user;
                 job.Organization = org;
 
@@ -108,28 +122,49 @@ namespace API.Controllers
                 if (await _jobRepository.SaveAllAsync())
                     return NoContent();
             }
-
-            return BadRequest("Failed to add job");
+            return BadRequest("You are not permitted to post a job.");
         }
 
         //Delete a Job
-        [Authorize(Policy = "RequireForteMembershipRole")]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteJob(int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (user == null) return BadRequest("User not found");
+            _mapper.Map<AppUser>(user);
 
-            var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
+            var job = await _jobRepository.GetJobByIdAsync(id);
+            //var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
+            if (job == null) return NotFound();
 
-            if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
+            var orgs = await _organizationRepository.GetOrganizationsAsync();
+            var affiliatedOrgs = orgs.Where(o => o.Members.Contains(user));
+            var thisOrg = await _organizationRepository.GetOrganizationByIdAsync(id);
 
-            if (job == null || user == null) return NotFound();
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var IsAdmin = userRoles.Contains("Admin");
+            var IsModerator = userRoles.Contains("Moderator");
+            var IsOrgMember = affiliatedOrgs.Contains(thisOrg);
+            var IsOrgAdmin = userRoles.Contains("OrgAdmin") && IsOrgMember;
+            var IsOrgModerator = userRoles.Contains("OrgModerator") && IsOrgMember;
+            var IsJobPoster = job.JobPoster.Id == user.Id;
 
-            user.CreatedJobs.Remove(job);
+            if (IsAdmin | IsModerator | IsOrgAdmin | IsOrgModerator | IsJobPoster)
+            {
+                var isDeleted = _jobRepository.DeleteJobById(id);
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+                if (isDeleted)
+                {
+                    if (await _jobRepository.SaveAllAsync())
+                    {
+                        return Ok("Job has successfully been deleted!");
+                    }
+                    return BadRequest("Failed to save changes to the database");
+                }
 
-            return BadRequest("Failed to delete the photo");
+                return BadRequest("Failed to delete the job.");
+            }
+            return Unauthorized("You are not permitted to perform this action. Nice try ;)");
         }
 
     }

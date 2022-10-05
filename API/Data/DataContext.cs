@@ -76,17 +76,11 @@ namespace API.Data
               builder.Entity<OrgLike>()
               .HasKey(k => new { k.OrgId, k.LikedUserId });
 
-            builder.Entity<OrgLike>()
-              .HasOne(s => s.Org)
-              .WithMany(l => l.LikedOrganizations)
-              .HasForeignKey(s => s.OrgId)
-              .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<OrgLike>()
-              .HasOne(s => s.LikedUser)
-              .WithMany(l => l.LikedByOrganizations)
-              .HasForeignKey(s => s.LikedUserId)
-              .OnDelete(DeleteBehavior.Cascade);
+            // builder.Entity<OrgLike>()
+            //   .HasOne(s => s.LikedUser)
+            //   .WithMany(l => l.LikedByOrganizations)
+            //   .HasForeignKey(s => s.LikedUserId)
+            //   .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Message>()
               .HasOne(u => u.Recipient)

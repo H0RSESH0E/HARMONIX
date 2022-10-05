@@ -42,7 +42,7 @@ export class JobCardComponent implements OnInit {
       if(this.memberService.currMem.savedJobs.length > 0)
       {
         var x = this.memberService.currMem.savedJobs.find((obj) => {
-      return obj.title === this.job.title && obj.orgId === this.job.orgId && obj.jobPosterId === this.job.jobPosterId ;}
+      return obj.title === this.job.title && obj.confirmedOrgId === this.job.confirmedOrgId && obj.jobPosterId === this.job.jobPosterId ;}
       );
       }
     }

@@ -11,6 +11,9 @@ export interface Organization {
   photoUrl: string;
   established: number;
   likes: number;
+  city: string;
+  provinceOrState: string;
+  country: string;
   created: Date;
   lastUpdated: Date;
   //Maybe implement in next sprint
